@@ -2,6 +2,7 @@ const time = document.querySelector('.time');
 const date = document.querySelector('.date');
 const greeting = document.querySelector('.greeting');
 const name = document.querySelector('.name');
+const body = document.querySelector('body');
 
 function showTime() {
   const dateTime = new Date();
@@ -19,26 +20,31 @@ function showDate() {
   date.textContent = dateDate.toLocaleDateString('en-US', options);
 }
 
-function showGreeting() {
-  const date = new Date();
-  const hours = date.getHours();
+function getTimeOfDay() {
+const date = new Date();
+const hours = date.getHours();
 
-
-  if(hours < 6){
-    greeting.textContent= 'Good evening'
-  } else if(hours < 12){
-    greeting.textContent= 'Good morning'
-  }else if(hours < 18){
-    greeting.textContent= 'Good day'
-  }else if(hours < 24){
-    greeting.textContent= 'Good evening'
+if (hours < 6) {
+    return 'evening'
+  } else if (hours < 12) {
+    return 'morning'
+  }else if (hours < 18) {
+    return 'day'
+  }else if (hours < 24) {
+    return 'evening'
   }
+}
+
+function showGreeting() {
+  const timeOfDay = getTimeOfDay();
+  greeting.textContent = `Good ${timeOfDay}`;
 }
 
 /*сохранение введенного имени */
 function setLocalStorage() {
   localStorage.setItem('name', name.value);
 }
+
 window.addEventListener('beforeunload', setLocalStorage)
 
 function getLocalStorage() {
@@ -46,4 +52,23 @@ function getLocalStorage() {
     name.value = localStorage.getItem('name');
   }
 }
+
 window.addEventListener('load', getLocalStorage)
+
+
+/*слайдер*/
+function getRandomNum(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function setBg() {
+  let timeOfDay= getTimeOfDay();
+  let bgNum= getRandomNum(1, 20);
+  if(bgNum < 10){
+    bgNum.padStart(2,'0')
+  }
+  body.style.backgroundImage = `url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg')`;
+}
+setBg()
