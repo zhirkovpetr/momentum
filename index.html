@@ -20,12 +20,16 @@
       <ul class="play-list"></ul>
     </div>
     <div class="weather">
-      <div class="city" contenteditable="true">Минск</div>
+      <label>
+         <input class="city" value="Minsk"/>
+      </label>
       <i class="weather-icon owf"></i>
       <div class="weather-error"></div>
       <div class="description-container">
         <span class="temperature"></span>
         <span class="weather-description"></span>
+        <span class="weather-wind-speed"></span>
+        <span class="weather-humidity"></span>
       </div>
       <div class="wind"></div>
       <div class="humidity"></div>
@@ -37,10 +41,10 @@
       <button class="slide-next slider-icon"></button>
     </div>
     <time class="time"></time>
-    <date class="date"></date>
+    <div class="date"></div>
     <div class="greeting-container">
       <span class="greeting"></span>
-      <input type="text" class="name" placeholder="[Enter name]" />
+      <input type="text" class="name" placeholder="[Enter name]"/>
     </div>
   </main>
   <footer class="footer">

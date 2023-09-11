@@ -9,8 +9,14 @@ window.addEventListener("DOMContentLoaded", () => {
   const weatherIcon = document.querySelector('.weather-icon');
   const temperature = document.querySelector('.temperature');
   const weatherDescription = document.querySelector('.weather-description');
+  const weatherWindSpeed = document.querySelector('.weather-wind-speed');
+  const weatherHumidity = document.querySelector('.weather-humidity');
   const city = document.querySelector('.city');
+  const quote = document.querySelector('.quote');
+  const author = document.querySelector('.author');
+  const changeQuote = document.querySelector('.change-quote');
   let randomNum = getRandomNum();
+  let i = 0;
 
   getName();
   showTime();
@@ -97,7 +103,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   /*Погода*/
   async function getWeather() {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=ru&appid=e612e6250fdb37b14c30611dad255a26&units=metric`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=ru&appid=e612e6250fdb37b14c30611dad255a26&units=metric`;
     const res = await fetch(url);
     const data = await res.json();
 
@@ -105,19 +111,12 @@ window.addEventListener("DOMContentLoaded", () => {
     weatherIcon.classList.add(`owf-${data.weather[0].id}`);
     temperature.textContent = `${data.main.temp.toFixed(0)}°C`;
     weatherDescription.textContent = data.weather[0].description;
-  }
-
-  function setCity(event) {
-    if (event.code === 'Enter') {
-      getWeather();
-      city.blur();
-    }
+    weatherWindSpeed.textContent = `Wind speed: ${data.wind.speed}m/s`
+    weatherHumidity.textContent = `Humidity: ${data.main.humidity}%`;
   }
 
   getWeather()
-  city.addEventListener('keyup', setCity);
-  city.addEventListener("blur", setCity);
-
+  city.addEventListener('change', getWeather);
 
   /*Плавная смена фоновых изображений*/
   function getRandomNum(min, max) {
@@ -125,4 +124,39 @@ window.addEventListener("DOMContentLoaded", () => {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
+
+  /*    Виджет "цитата дня"*/
+  const quotes = [
+    {
+      "text": "Пишите код так, как будто сопровождать его будет склонный к насилию психопат, который знает, где вы живете",
+      "author": "Стив Макконнелл"
+    },
+    {
+      "text": "Сложность программы растет до тех пор, пока не превысит способности программиста",
+      "author": "Артур Блох. Законы Мэрфи"
+    },
+    {
+      "text": "Ходить по воде и разрабатывать программы, следуя ТЗ, очень просто… если они заморожены",
+      "author": "И. Берард"
+    }
+  ]
+
+  async function getQuotes() {
+    /*const res = await fetch('assets/data.json');
+    const data = await res.json();
+    quote.textContent = data[i].text
+    author.textContent = data[i].author*/
+    const data = quotes[Math.floor(Math.random() * quotes.length)];
+    quote.textContent = data.text;
+    author.textContent = data.author;
+  }
+
+/*  function getQuotesnext() {
+    i = i < 2 ? i+1 : 0
+    getQuotes()
+  }*/
+
+  getQuotes();
+
+  changeQuote.addEventListener('click', getQuotes);
 });
