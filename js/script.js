@@ -1,3 +1,5 @@
+import playList from './playList.js';
+
 window.addEventListener("DOMContentLoaded", () => {
   const time = document.querySelector('.time');
   const data = document.querySelector('.date');
@@ -9,20 +11,32 @@ window.addEventListener("DOMContentLoaded", () => {
   const weatherIcon = document.querySelector('.weather-icon');
   const temperature = document.querySelector('.temperature');
   const weatherDescription = document.querySelector('.weather-description');
-  const weatherWindSpeed = document.querySelector('.weather-wind-speed');
-  const weatherHumidity = document.querySelector('.weather-humidity');
   const city = document.querySelector('.city');
   const quote = document.querySelector('.quote');
   const author = document.querySelector('.author');
   const changeQuote = document.querySelector('.change-quote');
-  let randomNum = getRandomNum();
+  const weatherWindSpeed = document.querySelector('.wind');
+  const weatherHumidity = document.querySelector('.humidity');
+  const playBtn = document.querySelector('.play');
+  const btnNext = document.querySelector('.play-next');
+  const btnPrev = document.querySelector('.play-prev');
+  const playListContainer = document.querySelector('.play-list');
+  const playItem = document.querySelector('.play-item');
+  const audio = new Audio();
+  let isPlay = false;
   let i = 0;
+  let playNum = 0;
+  let randomNum = getRandomNum();
 
+  getWeather();
   getName();
   showTime();
+  getQuotes();
   slideNext.addEventListener('click', getSlideNext)
   slidePrev.addEventListener('click', getSlidePrev)
+  city.addEventListener('change', getWeather);
   window.addEventListener('beforeunload', setName)
+  changeQuote.addEventListener('click', getQuotesnext);
 
   function showTime() {
     const date = new Date();
@@ -115,8 +129,7 @@ window.addEventListener("DOMContentLoaded", () => {
     weatherHumidity.textContent = `Humidity: ${data.main.humidity}%`;
   }
 
-  getWeather()
-  city.addEventListener('change', getWeather);
+
 
   /*Плавная смена фоновых изображений*/
   function getRandomNum(min, max) {
@@ -126,37 +139,63 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   /*    Виджет "цитата дня"*/
-  const quotes = [
-    {
-      "text": "Пишите код так, как будто сопровождать его будет склонный к насилию психопат, который знает, где вы живете",
-      "author": "Стив Макконнелл"
-    },
-    {
-      "text": "Сложность программы растет до тех пор, пока не превысит способности программиста",
-      "author": "Артур Блох. Законы Мэрфи"
-    },
-    {
-      "text": "Ходить по воде и разрабатывать программы, следуя ТЗ, очень просто… если они заморожены",
-      "author": "И. Берард"
-    }
-  ]
-
   async function getQuotes() {
-    /*const res = await fetch('assets/data.json');
+    const res = await fetch('assets/data.json');
     const data = await res.json();
     quote.textContent = data[i].text
-    author.textContent = data[i].author*/
-    const data = quotes[Math.floor(Math.random() * quotes.length)];
-    quote.textContent = data.text;
-    author.textContent = data.author;
+    author.textContent = data[i].author
   }
 
-/*  function getQuotesnext() {
+  function getQuotesnext() {
     i = i < 2 ? i+1 : 0
     getQuotes()
-  }*/
+  }
 
-  getQuotes();
+  /*плеер*/
 
-  changeQuote.addEventListener('click', getQuotes);
+  function togglePlay() {
+    isPlay ? pauseAudio() : playAudio();
+  }
+
+  function playAudio() {
+    audio.src = playList[playNum].src;
+    audio.currentTime = 0;
+    audio.play();
+    isPlay = true;
+    playBtn.classList.remove('play');
+    playBtn.classList.add('pause');
+  }
+
+  function pauseAudio() {
+    audio.pause();
+    isPlay = false
+    playBtn.classList.remove('pause');
+    playBtn.classList.add('play');
+  }
+
+  playBtn.addEventListener('click', togglePlay);
+
+  function playPrev() {
+    playNum = playNum > 0 ? playNum-- : playNum = playList.length - 1
+    playAudio()
+  }
+
+  btnPrev.addEventListener('click', playPrev)
+
+  function playNext() {
+    playNum = playNum < playList.length - 1 ? playNum + 1 : 0
+    playAudio()
+  }
+
+  btnNext.addEventListener('click', playNext)
+
+  for (let i = 0; i < playList.length; i++) {
+    const li = document.createElement('li');
+    li.classList.add(`play-item`)
+    li.textContent = playList[i].title
+    playListContainer.append(li)
+  }
+       /*let classesToAdd = [ 'play-item', 'item-active' ]
+       isPlay ? playItem.classList.add(`play-item`) : playItem.classList.add(...classesToAdd)*/
+
 });

@@ -45,8 +45,7 @@ body {
 
 .play-item {
     position: relative;
-    padding: 5px;
-    padding-left: 20px;
+    padding: 5px 5px 5px 20px;
     list-style: none;
     opacity: .8;
     cursor: pointer;
@@ -66,6 +65,7 @@ body {
 }
 
 .item-active::before {
+    content: "✓ ";
     color: #C5B358;
 }
 
@@ -107,6 +107,9 @@ body {
 }
 
 .pause {
+    width: 40px;
+    height: 40px;
+    background-size: 40px 40px;
     background-image: url("../assets/svg/pause.svg");
 }
 
