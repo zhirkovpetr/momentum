@@ -1,14 +1,20 @@
 [
   {
-    "text": "Пишите код так, как будто сопровождать его будет склонный к насилию психопат, который знает, где вы живете",
-    "author": "Стив Макконнелл"
+    "textRu": "Пишите код так, как будто сопровождать его будет склонный к насилию психопат, который знает, где вы живете",
+    "textEn": "Write the code as if it will be accompanied by a violent psychopath who knows where you live.",
+    "authorRu": "Стив Макконнелл",
+    "authorEn": "Steve McConnell"
   },
   {
-    "text": "Сложность программы растет до тех пор, пока не превысит способности программиста",
-    "author": "Артур Блох. Законы Мэрфи"
+    "textRu": "Сложность программы растет до тех пор, пока не превысит способности программиста",
+    "textEn": "The complexity of the program grows until it exceeds the capabilities of the programmer",
+    "authorRu": "Артур Блох. Законы Мэрфи",
+    "authorEn": "Arthur Bloch. Murphy's Laws"
   },
   {
-    "text": "Ходить по воде и разрабатывать программы, следуя ТЗ, очень просто… если они заморожены",
-    "author": "И. Берард"
+    "textRu": "Ходить по воде и разрабатывать программы, следуя ТЗ, очень просто… если они заморожены",
+    "textEn": "Walking on water and developing programs following the TOR is very easy ... if they are frozen",
+    "authorRu": "И. Берард",
+    "authorEn": "I. Berard"
   }
 ]
