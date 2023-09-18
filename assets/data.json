@@ -1,20 +1,27 @@
 [
   {
-    "textRu": "Пишите код так, как будто сопровождать его будет склонный к насилию психопат, который знает, где вы живете",
-    "textEn": "Write the code as if it will be accompanied by a violent psychopath who knows where you live.",
-    "authorRu": "Стив Макконнелл",
-    "authorEn": "Steve McConnell"
+    "text": {
+      "ru": "Пишите код так, как будто сопровождать его будет склонный к насилию психопат, который знает, где вы живете.",
+      "en": "Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live."
+    },
+    "author": { "ru": "Стивен Макконнелл", "en": "Steven McConnell" }
   },
   {
-    "textRu": "Сложность программы растет до тех пор, пока не превысит способности программиста",
-    "textEn": "The complexity of the program grows until it exceeds the capabilities of the programmer",
-    "authorRu": "Артур Блох. Законы Мэрфи",
-    "authorEn": "Arthur Bloch. Murphy's Laws"
+    "text": {
+      "ru": "Сложность программы растет до тех пор, пока не превысит способности программиста",
+      "en": "The complexity of the program grows until it exceeds the capabilities of the programmer"
+    },
+    "author": { "ru": "Артур Блох. Законы Мэрфи", "en": "Arthur Bloch. Murphy's Laws"}
   },
   {
     "textRu": "Ходить по воде и разрабатывать программы, следуя ТЗ, очень просто… если они заморожены",
     "textEn": "Walking on water and developing programs following the TOR is very easy ... if they are frozen",
     "authorRu": "И. Берард",
-    "authorEn": "I. Berard"
+    "authorEn": "I. Berard",
+    "text": {
+      "ru": "Ходить по воде и разрабатывать программы, следуя ТЗ, очень просто… если они заморожены",
+      "en": "Walking on water and developing programs following the TOR is very easy ... if they are frozen"
+    },
+    "author": { "ru": "И. Берард", "en": "I. Berard"}
   }
 ]

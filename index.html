@@ -1,56 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="assets/favicon.ico" rel="shortcut icon" />
-  <link rel="stylesheet" href="css/owfont-regular.css" />
-  <link rel="stylesheet" href="css/style.css" />
-  <title>momentum</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="assets/favicon.ico" rel="shortcut icon"/>
+    <link rel="stylesheet" href="css/owfont-regular.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <title>momentum</title>
 </head>
 <body>
-  <header class="header">
+<header class="header">
     <div class="player">
-      <div class="player-controls">
-        <button class="play-prev player-icon"></button>
-        <button class="play player-icon"></button>
-        <button class="play-next player-icon"></button>
-      </div>
-      <ul class="play-list"></ul>
+        <div class="player-controls">
+            <button class="play-prev player-icon"></button>
+            <button class="play player-icon"></button>
+            <button class="play-next player-icon"></button>
+        </div>
+        <ul class="play-list"></ul>
     </div>
     <div class="weather">
-      <label>
-         <input class="city" value="Minsk"/>
-      </label>
-      <i class="weather-icon owf"></i>
-      <div class="weather-error"></div>
-      <div class="description-container">
-        <span class="temperature"></span>
-        <span class="weather-description"></span>
-      </div>
-      <div class="wind"></div>
-      <div class="humidity"></div>
+        <label>
+            <input type="text" class="city" placeholder="[Enter your city]"/>
+        </label>
+        <i class="weather-icon owf"></i>
+        <div class="weather-error"></div>
+        <div class="description-container">
+            <span class="temperature"></span>
+            <span class="weather-description"></span>
+        </div>
+        <div class="wind"></div>
+        <div class="humidity"></div>
     </div>
-  </header>
-  <main class="main">
+</header>
+<main class="main">
     <div class="slider-icons">
-      <button class="slide-prev slider-icon"></button>
-      <button class="slide-next slider-icon"></button>
+        <button class="slide-prev slider-icon"></button>
+        <button class="slide-next slider-icon"></button>
     </div>
     <time class="time"></time>
     <div class="date"></div>
     <div class="greeting-container">
-      <span class="greeting"></span>
-      <input type="text" class="name" placeholder="[Enter name]"/>
+        <span class="greeting"></span>
+        <input type="text" class="name" id="name" placeholder="[Enter name]"/>
     </div>
-  </main>
-  <footer class="footer">
+</main>
+<footer class="footer">
     <button class="change-quote"></button>
     <div>
-      <div class="quote"></div>
-      <div class="author"></div>
+        <div class="quote"></div>
+        <div class="author"></div>
+        <a href="#" class="button-settings"></a>
+        <div class="container-settings">
+            <table class="table">
+                <tr class="tableString">
+                    <td class="tableName">Languages:</td>
+                    <td> русский
+                        <label for="rus" class="settings-lang">
+                            <input id="rus" class="input" type="checkbox" value="ru">
+                        </label><br>
+                        english
+                        <label for="eng" class="settings-lang">
+                            <input id="eng" class="input" name="languages" type="checkbox" checked value="en">
+                        </label>
+                    </td>
+                </tr>
+                <tr class="tableString">
+                    <td class="tableName">Photo sources:</td>
+                    <td>
+                        <label for="flickr">
+                            flickr: <input id="flickr" class="input" type="checkbox" value="flickr"><br>
+                            <input class="flickr-input image-src"
+                                   type="text"
+                                   placeholder="[Enter tag]"
+                            /><br>
+                        </label>
+                        <label for="unsplash">
+                            unsplash: <input id="unsplash" class="input" type="checkbox" value="unsplash"><br>
+                            <input class="flickr-input image-src"
+                                   type="text"
+                                   placeholder="[Enter tag]"
+                            /><br>
+                        </label>
+                        <label for="github">
+                            github: <input id="github" class="input" type="checkbox" value="unsplash" checked><br>
+                        </label>
+                    </td>
+                </tr>
+                <tr class="tableString">
+                    <td class="tableName">Blocks:</td>
+                    <td>
+                        <label for="time" class="settings-items show-item">
+                            time <input id="time" class="default-input" type="checkbox" name="time" value="0"
+                                        checked><br>
+                        </label>
+                        <label for="date" class="settings-items show-item">
+                            date <input id="date" class="default-input" type="checkbox" name="date" value="1"
+                                        checked><br>
+                        </label>
+                        <label for="greeting" class="settings-items show-item">
+                            greeting <input id="greeting" class="default-input" type="checkbox" name="greeting"
+                                            value="2" checked><br>
+                        </label>
+                        <label for="quote" class="settings-items show-item">
+                            quote <input id="quote" class="default-input" type="checkbox" name="quote" value="3"
+                                         checked><br>
+                        </label>
+                        <label for="weather" class="settings-items show-item">
+                            weather <input id="weather" class="default-input" type="checkbox" name="weather" value="4"
+                                           checked><br>
+                        </label>
+                        <label for="audio" class="settings-items show-item">
+                            audio <input id="audio" class="default-input" type="checkbox" name="audio" value="5"
+                                         checked>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="overlay js-overlay-modal"></div>
     </div>
-  </footer>
-  <script type="module" src="js/script.js"></script>
+</footer>
+<script type="module" src="js/script.js"></script>
+<script src="assets/data.js"></script>
 </body>
 </html>

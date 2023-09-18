@@ -16,7 +16,7 @@ body {
     font-size: 16px;
     color: #fff;
     text-align: center;
-    background: url("../assets/img/bg.jpg") center/cover, rgba(0, 0, 0, 0.5);
+    background: center/cover, rgba(0, 0, 0, 0.5);
     background-blend-mode: multiply;
     transition: background-image 1s ease-in-out;
 }
@@ -286,4 +286,31 @@ body {
         font-size: 32px;
         padding: 5px;
     }
+}
+
+
+/* Стили для кнопок. Мы ведь порядочные разработчики, негоже простые ссылки оставлять */
+
+.button-settings {
+    padding: 0.8rem;
+    text-decoration: none;
+    background-image: url("../assets/svg/settings.svg");
+    background-repeat: no-repeat;
+    cursor: pointer;
+    background-size: contain;
+    position: absolute;
+    bottom: 30px;
+    left: 20px;
+    -webkit-transition: -webkit-transform .8s ease-in-out;
+    transition: transform .8s ease-in-out;
+}
+
+.button-settings:hover {
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.button-settings:active {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
 }
