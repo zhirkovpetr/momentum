@@ -46,17 +46,18 @@
 </main>
 <footer class="footer">
     <button class="change-quote"></button>
-    <div>
+    <div class="quote-container">
         <div class="quote"></div>
         <div class="author"></div>
-        <a href="#" class="button-settings"></a>
         <div class="container-settings">
-            <table class="table">
+        <a href="#" class="button-settings"></a>
+
+            <table class="table table-items">
                 <tr class="tableString">
-                    <td class="tableName">Languages:</td>
+                    <td class="tableName language">Languages:</td>
                     <td> русский
                         <label for="rus" class="settings-lang">
-                            <input id="rus" class="input" type="checkbox" value="ru">
+                            <input id="rus" class="input" type="checkbox" value="ru" name="languages">
                         </label><br>
                         english
                         <label for="eng" class="settings-lang">
@@ -65,7 +66,7 @@
                     </td>
                 </tr>
                 <tr class="tableString">
-                    <td class="tableName">Photo sources:</td>
+                    <td class="tableName photoSources">Photo sources:</td>
                     <td>
                         <label for="flickr">
                             flickr: <input id="flickr" class="input" type="checkbox" value="flickr"><br>
@@ -86,20 +87,20 @@
                         </label>
                     </td>
                 </tr>
+
                 <tr class="tableString">
-                    <td class="tableName">Blocks:</td>
+                    <td class="tableName blocks">Blocks:</td>
                     <td>
                         <label for="time" class="settings-items show-item">
                             time <input id="time" class="default-input" type="checkbox" name="time" value="0"
                                         checked><br>
                         </label>
-                        <label for="date" class="settings-items show-item">
-                            date <input id="date" class="default-input" type="checkbox" name="date" value="1"
+                        <label for="data" class="settings-items show-item">
+                            date <input id="data" class="default-input" type="checkbox" name="date" value="1"
                                         checked><br>
                         </label>
                         <label for="greeting" class="settings-items show-item">
-                            greeting <input id="greeting" class="default-input" type="checkbox" name="greeting"
-                                            value="2" checked><br>
+                        <input id="greeting" class="default-input" type="checkbox" name="greeting" value="2" checked><br>
                         </label>
                         <label for="quote" class="settings-items show-item">
                             quote <input id="quote" class="default-input" type="checkbox" name="quote" value="3"

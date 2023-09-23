@@ -1,5 +1,5 @@
 import playList from './playList.js';
-
+/*window.addEventListener("DOMContentLoaded", () => {*/
 const time = document.querySelector('.time');
 const data = document.querySelector('.date');
 const greeting = document.querySelector('.greeting');
@@ -25,14 +25,15 @@ let isPlay = false;
 let i = 0;
 let playNum = 0;
 const playListContainer = document.querySelector('.play-list');
-//const allPlayListLI = document.querySelectorAll('.play-item');
 //const imageSrcInput = document.querySelectorAll('.image-src-input');
-const weather= document.querySelector('.weather');
-const player= document.querySelector('.player');
+//const weather= document.querySelector('.weather');
+//const player= document.querySelector('.player');
+const buttonSettings= document.querySelector('.button-settings');
+const table= document.querySelector('.table');
 const state = {
   language: "en",
   photoSource: {source: 'github', tag: ''},
-  blocks: ['time', 'date', 'greeting', 'quote', 'weather', 'audio', 'todolist']
+  blocks: ['time', 'date', 'greeting', 'quote', 'weather', 'audio']
 }
 
 
@@ -41,53 +42,62 @@ window.addEventListener("DOMContentLoaded", getName)
 window.addEventListener("DOMContentLoaded", showTime)
 window.addEventListener("DOMContentLoaded", getQuotes)
 window.addEventListener("DOMContentLoaded", setBg)
-
-
 slideNext.addEventListener('click', getSlideNext)
 slidePrev.addEventListener('click', getSlidePrev)
 city.addEventListener('change', changeCityHandler);
 window.addEventListener('beforeunload', setName)
 changeQuote.addEventListener('click', getQuotesnext);
-
 /*-----------------------------Time----------------------------*/
 function showTime() {
   const date = new Date();
-  time.textContent = date.toLocaleTimeString(state.language === "en" ? 'en-US' : 'ru-Ru');
+  time.textContent = date.toLocaleTimeString();
   showDate()
   showGreeting(state.language)
   setTimeout(showTime, 1000);
 }
-
-
 function showDate() {
   const date = new Date();
   const options = {weekday: 'long', day: 'numeric', month: 'long'};
   data.textContent = date.toLocaleDateString(state.language === "en" ? 'en-US' : 'ru-Ru', options);
 }
-
 function getTimeOfDay() {
   const date = new Date();
   const hours = date.getHours();
 
   if (hours < 6) {
-    return state.language === "en" ? 'night' : "ночи"
+    return 'night'
   } else if (hours < 12) {
-    return state.language === "en" ? 'morning' : "утра"
+    return 'morning'
   } else if (hours < 18) {
-    return state.language === "en" ? 'afternoon' : "дня"
+    return 'afternoon'
   } else if (hours < 24) {
-    return state.language === "en" ? 'evening' : "вечера"
+    return 'evening'
   }
 }
 
 let greetingTranslation = {
-  en: "Good",
-  ru: "Хорошего"
+  morning: {
+    ru: 'Доброе утро',
+    en: 'Good morning',
+  },
+  afternoon: {
+    ru: 'Добрый день',
+    en: 'Good day',
+  },
+  evening: {
+    ru: 'Добрый вечер',
+    en: 'Good evening',
+  },
+  night: {
+    ru: 'Доброй ночи',
+    en: 'Good night',
+  },
 }
 
-function showGreeting(language) {
+function showGreeting() {
   const timeOfDay = getTimeOfDay();
-  greeting.textContent = `${timeOfDay === 'ночи' ? state.language === "ru" && "Хорошей" : greetingTranslation[language]}  ${timeOfDay}`;
+  greeting.textContent = `${greetingTranslation[timeOfDay][state.language]}`;
+
 }
 
 /*-----------------------------Name----------------------------*/
@@ -98,7 +108,6 @@ function setName() {
     console.log(e)
   }
 }
-
 function getName() {
   try {
     name.value = localStorage.getItem('name') || ''
@@ -109,11 +118,8 @@ function getName() {
 export function translateName() {
   name.placeholder = defaultData.namePlaceholder[state.language];
 }
-
 /*---------------------------------------------------------------*/
-
 /*-----------------------------Image----------------------------*/
-
 async function getLinkToImage(source, tag) {
   if (source === "unsplash") {
     const res = await fetch(`https://api.unsplash.com/photos/random?orientation=landscape&query=${tag}&client_id=1vT6OWQA7ERb719rz7EqvBfhkLYTsh6QzXO54nJQulg`);
@@ -126,7 +132,6 @@ async function getLinkToImage(source, tag) {
     return data.photos.photo[bgNum].url_h;
   }
 }
-
 async function setBg() {
   const date = new Date();
   let timeOfDay = getTimeOfDay(date);
@@ -145,28 +150,23 @@ async function setBg() {
     body.style.backgroundImage = `url(${img.src})`;
   };
 }
-
 /*Изображения можно перелистывать кликами по стрелкам, расположенным по бокам экрана*/
 function getSlideNext() {
   randomNum = randomNum > 20 ? 1 : randomNum + 1
   setBg()
 }
-
 function getSlidePrev() {
   randomNum = randomNum > -1 ? 20 : randomNum - 1
   setBg()
 }
-
 /*-----------------------------Weather----------------------------*/
 const value = city.value;
 city.value = value ? value : defaultData.defaultCity[state.language];
-
 async function getWeather() {
   const value = city.value;
   city.value = value ? value : defaultData.defaultCity[state.language];
   const currentLang = state.language;
   const currentCity = city.value ? city.value : defaultData.defaultCity[currentLang];
-
   const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${currentCity}&lang=${currentLang}&appid=e612e6250fdb37b14c30611dad255a26&units=metric`);
   const data = await res.json();
   weatherIcon.className = 'weather-icon owf';
@@ -182,44 +182,38 @@ function changeCityHandler() {
   getWeather();
 }
 /*-----------------------------Quotes----------------------------*/
-
 async function getQuotes() {
   const res = await fetch('assets/data.json');
   const data = await res.json();
   quote.textContent = data[i].text[state.language]
   author.textContent = data[i].author[state.language]
+  return data
 }
+
 
 function getQuotesnext() {
   i = i < 2 ? i + 1 : 0
   getQuotes()
 }
-
 /*translate quotes*/
 
 export async function translateQuotes() {
   const data = await getQuotes();
-  // console.log(data);
 
   const quotes = quote.textContent;
   const currentLang = state.language;
   const changeLang = currentLang === "en" ? "ru" : "en";
-
   const index = data.findIndex((item) => item.text[changeLang] === quotes);
-
   if (index !== -1) {
     quote.textContent = data[index].text[currentLang];
     author.textContent = data[index].author[currentLang];
   }
 }
 /*---------------------------------------------------------------*/
-
 /*----------------------------Audio Player----------------------------*/
-
 function togglePlay() {
   isPlay ? pauseAudio() : playAudio();
 }
-
 function playAudio() {
   const allPlayListLI = document.querySelectorAll('.play-item');
   audio.src = playList[playNum].src;
@@ -233,7 +227,6 @@ function playAudio() {
   });
   allPlayListLI[playNum].classList.add('item-active');
 }
-
 function createPlayList() {
   for (let i = 0; i < playList.length; i++) {
     const li = document.createElement('li');
@@ -242,19 +235,14 @@ function createPlayList() {
     playListContainer.append(li)
   }
 }
-
 createPlayList()
-
 function pauseAudio() {
   audio.pause();
   isPlay = false
   playBtn.classList.remove('pause');
   playBtn.classList.add('play');
 }
-
-
 playBtn.addEventListener('click', togglePlay);
-
 function playPrev() {
   if (playNum === 0) {
     playNum = playList.length - 1;
@@ -263,16 +251,12 @@ function playPrev() {
   }
   playAudio()
 }
-
 btnPrev.addEventListener('click', playPrev)
-
 function playNext() {
   playNum = playNum < playList.length - 1 ? playNum + 1 : 0
   playAudio()
 }
-
 btnNext.addEventListener('click', playNext)
-
 /*translate*/
 export function translatePlayer() {
   const allPlayListLI = document.querySelectorAll('.play-item');
@@ -283,46 +267,140 @@ export function translatePlayer() {
 
 /*--------------------------------------------------------------------*/
 
+function openSettings() {
+  table.classList.toggle('visible')
+}
+
+buttonSettings.addEventListener('click', openSettings)
+
+
+export const langInputs = document.querySelectorAll('input[name="languages"]');
+
+export const imageSourceInputs = document.querySelectorAll(
+  'input[name="image-src"]',
+);
+const unsplashInput = document.querySelector('.unsplash');
+const flickrInput = document.querySelector('.flickr');
+
+export const blockInputs = document.querySelectorAll('input[type="checkbox"]');
+
+/* ******************** */
+
+const settingsTranslate = {
+  language: {
+    ru: 'Язык:',
+    en: 'Language:',
+  },
+  photoSources: {
+    ru: 'Изображение:',
+    en: 'Images:',
+  },
+  show: {
+    ru: 'Показывать:',
+    en: 'Show:',
+  },
+  blocks: [
+    {
+      ru: 'время',
+      en: 'time',
+    },
+    {
+      ru: 'дата',
+      en: 'date',
+    },
+    {
+      ru: 'погода',
+      en: 'weather',
+    },
+    {
+      ru: 'аудио',
+      en: 'audio',
+    },
+    {
+      ru: 'цитата',
+      en: 'quotes',
+    },
+    {
+      ru: 'приветствие',
+      en: 'greeting',
+    }
+  ],
+};
+
+
+
+export function translateDefaultData() {
+  document.querySelector('.name').placeholder = defaultData.namePlaceholder[state.language];
+  document.querySelector('.city').placeholder = defaultData.cityPlaceholder[state.language];
+  document.querySelectorAll('.image-src').forEach(
+    (input) => (input.placeholder = defaultData.tagPlaceholder[state.language]),
+  );
+  document.querySelector('.language').firstChild.textContent =
+    settingsTranslate.language[state.language];
+  document.querySelector('.photoSources').firstChild.textContent =
+    settingsTranslate.photoSources[state.language];
+
+  document.querySelector('.blocks').firstChild.textContent =
+    settingsTranslate.blocks[state.language];
+
+  document
+    .querySelectorAll('.show-item')
+    .forEach(
+      (item, index) =>
+        (item.firstChild.textContent =
+          settingsTranslate.blocks[index][state.language]),
+    );
+}
+
 export function setLang() {
   showDate();
   translateQuotes();
   translatePlayer();
-  translateName();
+  translateDefaultData();
   const value = city.value;
   if (value === 'Minsk' || value === 'Минск') {
     city.value = defaultData.defaultCity[state.language];
   }
   getWeather();
 }
-
+const rus= document.getElementById('rus');
+const eng= document.getElementById('eng');
 function changeLang() {
   state.language = this.value;
+  state.language === "en" ? rus.checked= false : eng.checked= false
   setLang();
 }
 
 function changeBlocksVisibility(name) {
-  if(name === 'time'){
-    time.classList.toggle('invisible');
-  } else if (name === 'data'){
-    data.classList.toggle('invisible');
-  }else if (name === 'greeting'){
-    greeting.classList.toggle('invisible');
-  }else if (name === 'quotes'){
-    quote.classList.toggle('invisible');
-  }else if (name === 'weather'){
-    weather.classList.toggle('invisible');
-  }else if (name === 'audio'){
-    player.classList.toggle('invisible');
-  } else {
-    console.log(`Sorry, no this input ${name}.`);
+  switch (name) {
+    case 'time':
+      document.querySelector('.time').classList.toggle('invisible');
+      break;
+    case 'date':
+      document.querySelector('.date').classList.toggle('invisible');
+      break;
+    case 'greeting':
+      document
+        .querySelector('.greeting-container')
+        .classList.toggle('invisible');
+      break;
+    case 'quote':
+      document.querySelector('.quote').classList.toggle('invisible');
+      document.querySelector('.author').classList.toggle('invisible');
+      document.querySelector('.change-quote').classList.toggle('invisible');
+      break;
+    case 'weather':
+      document.querySelector('.weather').classList.toggle('invisible');
+      break;
+    case 'audio':
+      document.querySelector('.player').classList.toggle('invisible');
+      break;
+    default:
+      console.log(`You switched the language to ${state.language}.`);
   }
 }
-
-export const blockInputs = document.querySelectorAll('input[type="checkbox"]');
-
 function changeBlocksVisibilityAndInitState() {
   changeBlocksVisibility(this.name);
-
   state.blocks = Array.from(blockInputs).reduce((array, input) => {
     if (input.checked) {
       array.push(input.name);
@@ -347,13 +425,7 @@ function changeImageSource() {
   setBg();
 }
 
-export const langInputs = document.querySelectorAll('input[name="languages"]');
-export const imageSourceInputs = document.querySelectorAll(
-  'input[name="image-src"]',
-);
-
-const unsplashInput = document.querySelector('.unsplash');
-const flickrInput = document.querySelector('.flickr');
+/* ******************** */
 
 langInputs.forEach((input) => input.addEventListener('change', changeLang));
 imageSourceInputs.forEach((input) =>
@@ -364,6 +436,82 @@ blockInputs.forEach((input) =>
 );
 unsplashInput.addEventListener('change', changeTag);
 flickrInput.addEventListener('change', changeTag);
+
+
+/*
+export function setLang() {
+    showDate();
+    translateQuotes();
+    translatePlayer();
+    translateName();
+    const value = city.value;
+    if (value === 'Minsk' || value === 'Минск') {
+        city.value = defaultData.defaultCity[state.language];
+    }
+    getWeather();
+}
+function changeLang() {
+    state.language = this.value;
+    setLang();
+}
+function changeBlocksVisibility(name) {
+    if(name === 'time'){
+        time.classList.toggle('invisible');
+    } else if (name === 'data'){
+        date.classList.toggle('invisible');
+    }else if (name === 'greeting'){
+        greeting.classList.toggle('invisible');
+    }else if (name === 'quotes'){
+        quote.classList.toggle('invisible');
+    }else if (name === 'weather'){
+        weather.classList.toggle('invisible');
+    }else if (name === 'audio'){
+        player.classList.toggle('invisible');
+    } else {
+        console.log(`Sorry, no this input ${name}.`);
+    }
+}
+export const blockInputs = document.querySelectorAll('input[type="checkbox"]');
+function changeBlocksVisibilityAndInitState() {
+    changeBlocksVisibility(this.name);
+    state.blocks = Array.from(blockInputs).reduce((array, input) => {
+        if (input.checked) {
+            array.push(input.name);
+        }
+        return array;
+    }, []);
+}
+function changeTag() {
+    state.photoSource.tag = this.value;
+    setBg();
+}
+function changeImageSource() {
+    const source = this.value;
+    state.photoSource.source = source;
+    const tagInput = document.querySelector(`.${source}`);
+    if (tagInput) {
+        state.photoSource.tag = tagInput.value;
+    }
+    setBg();
+}
+export const langInputs = document.querySelectorAll('input[name="languages"]');
+export const imageSourceInputs = document.querySelectorAll(
+    'input[name="image-src"]',
+);
+const unsplashInput = document.querySelector('.unsplash');
+const flickrInput = document.querySelector('.flickr');
+langInputs.forEach((input) => input.addEventListener('change', changeLang));
+imageSourceInputs.forEach((input) =>
+    input.addEventListener('change', changeImageSource),
+);
+blockInputs.forEach((input) =>
+    input.addEventListener('change', changeBlocksVisibilityAndInitState),
+);
+unsplashInput.addEventListener('change', changeTag);
+flickrInput.addEventListener('change', changeTag);
+*/
+
+
 
 function getRandomNum(min, max) {
   min = Math.ceil(min);

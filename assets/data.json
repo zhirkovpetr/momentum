@@ -14,10 +14,6 @@
     "author": { "ru": "Артур Блох. Законы Мэрфи", "en": "Arthur Bloch. Murphy's Laws"}
   },
   {
-    "textRu": "Ходить по воде и разрабатывать программы, следуя ТЗ, очень просто… если они заморожены",
-    "textEn": "Walking on water and developing programs following the TOR is very easy ... if they are frozen",
-    "authorRu": "И. Берард",
-    "authorEn": "I. Berard",
     "text": {
       "ru": "Ходить по воде и разрабатывать программы, следуя ТЗ, очень просто… если они заморожены",
       "en": "Walking on water and developing programs following the TOR is very easy ... if they are frozen"
