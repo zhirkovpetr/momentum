@@ -55,65 +55,52 @@
             <table class="table table-items">
                 <tr class="tableString">
                     <td class="tableName language">Languages:</td>
-                    <td> русский
-                        <label for="rus" class="settings-lang">
-                            <input id="rus" class="input" type="checkbox" value="ru" name="languages">
-                        </label><br>
-                        english
-                        <label for="eng" class="settings-lang">
-                            <input id="eng" class="input" name="languages" type="checkbox" checked value="en">
-                        </label>
+                    <td class="columns">
+                       <input id="lang1" class="input" type="checkbox" value="ru" name="languages">
+                       <label for="lang1" class="settings-lang">русский</label><br>
+                       <input id="lang2" class="input" name="languages" type="checkbox" checked value="en">
+                       <label for="lang2" class="settings-lang">english</label>
                     </td>
                 </tr>
                 <tr class="tableString">
                     <td class="tableName photoSources">Photo sources:</td>
-                    <td>
-                        <label for="flickr">
-                            flickr: <input id="flickr" class="input" type="checkbox" value="flickr"><br>
-                            <input class="flickr-input image-src"
+                    <td class="columns">
+                        <input id="flickr" class="input" type="radio" value="flickr" checked name="picture">
+                        <label for="flickr" class="settings-item"> flickr</label>
+                        <label>
+                            <input class="flickr hide-input image-src"
                                    type="text"
                                    placeholder="[Enter tag]"
-                            /><br>
-                        </label>
-                        <label for="unsplash">
-                            unsplash: <input id="unsplash" class="input" type="checkbox" value="unsplash"><br>
-                            <input class="flickr-input image-src"
-                                   type="text"
-                                   placeholder="[Enter tag]"
-                            /><br>
-                        </label>
-                        <label for="github">
-                            github: <input id="github" class="input" type="checkbox" value="unsplash" checked><br>
-                        </label>
+                            />
+                            </label><br>
+                        <input id="unsplash" class="input" type="radio" value="unsplash" name="picture">
+                        <label for="unsplash" class="settings-item"> unsplash</label>
+                        <label>
+                            <input class="unsplash hide-input image-src"
+                               type="text"
+                               placeholder="[Enter tag]"
+                            />
+                        </label><br>
+                        <input id="github" class="input github" type="radio" value="github" name="picture">
+                        <label for="github" class="settings-item"> github</label>
                     </td>
                 </tr>
 
                 <tr class="tableString">
                     <td class="tableName blocks">Blocks:</td>
-                    <td>
-                        <label for="time" class="settings-items show-item">
-                            time <input id="time" class="default-input" type="checkbox" name="time" value="0"
-                                        checked><br>
-                        </label>
-                        <label for="data" class="settings-items show-item">
-                            date <input id="data" class="default-input" type="checkbox" name="date" value="1"
-                                        checked><br>
-                        </label>
-                        <label for="greeting" class="settings-items show-item">
-                        <input id="greeting" class="default-input" type="checkbox" name="greeting" value="2" checked><br>
-                        </label>
-                        <label for="quote" class="settings-items show-item">
-                            quote <input id="quote" class="default-input" type="checkbox" name="quote" value="3"
-                                         checked><br>
-                        </label>
-                        <label for="weather" class="settings-items show-item">
-                            weather <input id="weather" class="default-input" type="checkbox" name="weather" value="4"
-                                           checked><br>
-                        </label>
-                        <label for="audio" class="settings-items show-item">
-                            audio <input id="audio" class="default-input" type="checkbox" name="audio" value="5"
-                                         checked>
-                        </label>
+                    <td class="columns">
+                        <input id="time" class="default-input" type="checkbox" name="time" value="0" checked>
+                        <label for="time" class="settings-items show-item"> time</label><br>
+                        <input id="data" class="default-input" type="checkbox" name="date" value="1" checked>
+                        <label for="data" class="settings-items show-item"> date</label><br>
+                        <input id="greeting" class="default-input" type="checkbox" name="greeting" value="2" checked>
+                        <label for="greeting" class="settings-items show-item"> greeting</label><br>
+                        <input id="quote" class="default-input" type="checkbox" name="quote" value="3" checked>
+                        <label for="quote" class="settings-items show-item"> quote</label><br>
+                        <input id="weather" class="default-input" type="checkbox" name="weather" value="4" checked>
+                        <label for="weather" class="settings-items show-item"> weather</label><br>
+                        <input id="audio" class="default-input" type="checkbox" name="audio" value="5" checked>
+                        <label for="audio" class="settings-items show-item"> audio</label>
                     </td>
                 </tr>
             </table>

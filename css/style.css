@@ -110,7 +110,7 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     row-gap: 5px;
-    width: 180px;
+    width: 190px;
     min-height: 180px;
     text-align: left;
 }
@@ -279,7 +279,21 @@ body {
     text-align: left;
     list-style: none;
     border-radius: 10px;
-    border-spacing: 10px;
+    border-spacing: 7px 11px;
+}
+
+.tableString{
+    text-align: left;
+}
+
+.image-src{
+    border: none;
+    border-bottom: 1px solid white;
+    background-color: transparent;
+    color: inherit;
+    outline: none;
+    width: 100px;
+    /*    visibility: hidden;*/
 }
 
 .table:after {
@@ -307,6 +321,14 @@ body {
 
 .tableName{
     width: 110px;
+}
+
+.flickr{
+    margin-left: 30px;
+}
+
+.columns{
+    width: 200px;
 }
 
 .table-items{
