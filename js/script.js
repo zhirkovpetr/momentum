@@ -1,5 +1,5 @@
 import playList from './playList.js';
-/*window.addEventListener("DOMContentLoaded", () => {*/
+
 const time = document.querySelector('.time');
 const data = document.querySelector('.date');
 const greeting = document.querySelector('.greeting');
@@ -19,20 +19,19 @@ const changeQuote = document.querySelector('.change-quote');
 const playBtn = document.querySelector('.play');
 const btnNext = document.querySelector('.play-next');
 const btnPrev = document.querySelector('.play-prev');
+const playListContainer = document.querySelector('.play-list');
+const buttonSettings = document.querySelector('.button-settings');
+const table = document.querySelector('.table');
 const audio = new Audio();
 let randomNum = getRandomNum();
 let isPlay = false;
 let i = 0;
 let playNum = 0;
-const playListContainer = document.querySelector('.play-list');
-const buttonSettings = document.querySelector('.button-settings');
-const table = document.querySelector('.table');
 let state = {
   language: "en",
   photoSource: {source: 'github', tag: ''},
   blocks: ['time', 'date', 'greeting', 'quote', 'weather', 'audio']
 }
-
 
 window.addEventListener("DOMContentLoaded", getWeather)
 window.addEventListener("DOMContentLoaded", getName)
@@ -41,9 +40,9 @@ window.addEventListener("DOMContentLoaded", getQuotes)
 window.addEventListener("DOMContentLoaded", setBg)
 slideNext.addEventListener('click', getSlideNext)
 slidePrev.addEventListener('click', getSlidePrev)
-city.addEventListener('change', changeCityHandler);/*
-window.addEventListener('beforeunload', setName)*/
+city.addEventListener('change', changeCityHandler);
 changeQuote.addEventListener('click', getQuotesnext);
+
 /*-----------------------------Time----------------------------*/
 function showTime() {
   const date = new Date();
@@ -52,11 +51,13 @@ function showTime() {
   showGreeting(state.language)
   setTimeout(showTime, 1000);
 }
+
 function showDate() {
   const date = new Date();
   const options = {weekday: 'long', day: 'numeric', month: 'long'};
   data.textContent = date.toLocaleDateString(state.language === "en" ? 'en-US' : 'ru-Ru', options);
 }
+
 function getTimeOfDay() {
   const date = new Date();
   const hours = date.getHours();
@@ -72,29 +73,9 @@ function getTimeOfDay() {
   }
 }
 
-let greetingTranslation = {
-  morning: {
-    ru: 'Доброе утро',
-    en: 'Good morning',
-  },
-  afternoon: {
-    ru: 'Добрый день',
-    en: 'Good day',
-  },
-  evening: {
-    ru: 'Добрый вечер',
-    en: 'Good evening',
-  },
-  night: {
-    ru: 'Доброй ночи',
-    en: 'Good night',
-  },
-}
-
 function showGreeting() {
   const timeOfDay = getTimeOfDay();
   greeting.textContent = `${greetingTranslation[timeOfDay][state.language]}`;
-
 }
 
 /*-----------------------------Name----------------------------*/
@@ -105,7 +86,9 @@ function getName() {
     console.log(e)
   }
 }
+
 /*---------------------------------------------------------------*/
+
 /*-----------------------------Image----------------------------*/
 async function getLinkToImage(source, tag) {
   if (source === "unsplash") {
@@ -119,6 +102,7 @@ async function getLinkToImage(source, tag) {
     return data.photos.photo[bgNum].url_h;
   }
 }
+
 async function setBg() {
   const date = new Date();
   let timeOfDay = getTimeOfDay(date);
@@ -137,18 +121,22 @@ async function setBg() {
     body.style.backgroundImage = `url(${img.src})`;
   };
 }
+
 /*Изображения можно перелистывать кликами по стрелкам, расположенным по бокам экрана*/
 function getSlideNext() {
   randomNum = randomNum > 20 ? 1 : randomNum + 1
   setBg()
 }
+
 function getSlidePrev() {
   randomNum = randomNum > -1 ? 20 : randomNum - 1
   setBg()
 }
+
 /*-----------------------------Weather----------------------------*/
 const value = city.value;
 city.value = value ? value : defaultData.defaultCity[state.language];
+
 async function getWeather() {
   const value = city.value;
   city.value = value ? value : defaultData.defaultCity[state.language];
@@ -163,11 +151,13 @@ async function getWeather() {
   weatherWindSpeed.textContent = `${defaultData.windSpeed[currentLang]}: ${data.wind.speed} ${defaultData.windSpeedUnits[currentLang]}`;
   weatherHumidity.textContent = `${defaultData.humidity[currentLang]}: ${data.main.humidity}%`;
 }
+
 function changeCityHandler() {
   const value = city.value;
   city.value = value ? value : defaultData.defaultCity[state.language];
   getWeather();
 }
+
 /*-----------------------------Quotes----------------------------*/
 async function getQuotes() {
   const res = await fetch('assets/data.json');
@@ -182,6 +172,7 @@ function getQuotesnext() {
   i = i < 2 ? i + 1 : 0
   getQuotes()
 }
+
 /*translate quotes*/
 
 export async function translateQuotes() {
@@ -196,11 +187,14 @@ export async function translateQuotes() {
     author.textContent = data[index].author[currentLang];
   }
 }
+
 /*---------------------------------------------------------------*/
+
 /*----------------------------Audio Player----------------------------*/
 function togglePlay() {
   isPlay ? pauseAudio() : playAudio();
 }
+
 function playAudio() {
   const allPlayListLI = document.querySelectorAll('.play-item');
   audio.src = playList[playNum].src;
@@ -214,6 +208,7 @@ function playAudio() {
   });
   allPlayListLI[playNum].classList.add('item-active');
 }
+
 function createPlayList() {
   for (let i = 0; i < playList.length; i++) {
     const li = document.createElement('li');
@@ -222,14 +217,18 @@ function createPlayList() {
     playListContainer.append(li)
   }
 }
+
 createPlayList()
+
 function pauseAudio() {
   audio.pause();
   isPlay = false
   playBtn.classList.remove('pause');
   playBtn.classList.add('play');
 }
+
 playBtn.addEventListener('click', togglePlay);
+
 function playPrev() {
   if (playNum === 0) {
     playNum = playList.length - 1;
@@ -238,12 +237,16 @@ function playPrev() {
   }
   playAudio()
 }
+
 btnPrev.addEventListener('click', playPrev)
+
 function playNext() {
   playNum = playNum < playList.length - 1 ? playNum + 1 : 0
   playAudio()
 }
+
 btnNext.addEventListener('click', playNext)
+
 /*translate*/
 export function translatePlayer() {
   const allPlayListLI = document.querySelectorAll('.play-item');
@@ -273,47 +276,6 @@ export const blockInputs = document.querySelectorAll('input[type="checkbox"]');
 
 /* ******************** */
 
-const settingsTranslate = {
-  language: {
-    ru: 'Язык:',
-    en: 'Language:',
-  },
-  photoSources: {
-    ru: 'Изображение:',
-    en: 'Images:',
-  },
-  show: {
-    ru: 'Блок:',
-    en: 'Blocks:',
-  },
-  blocks: [
-    {
-      ru: 'время',
-      en: 'time',
-    },
-    {
-      ru: 'дата',
-      en: 'date',
-    },
-    {
-      ru: 'приветствие',
-      en: 'greeting',
-    },
-    {
-      ru: 'цитата',
-      en: 'quotes',
-    },
-    {
-      ru: 'погода',
-      en: 'weather',
-    },
-    {
-      ru: 'аудио',
-      en: 'audio',
-    }
-  ],
-};
-
 export function translateDefaultData() {
   let currentLang = state.language
   document.querySelector('.name').placeholder = defaultData.namePlaceholder[currentLang];
@@ -322,16 +284,16 @@ export function translateDefaultData() {
     (input) => (input.placeholder = defaultData.tagPlaceholder[currentLang]),
   );
   document.querySelector('.language').firstChild.textContent =
-    settingsTranslate.language[currentLang];
+    settingsLanguages.language[currentLang];
   document.querySelector('.photoSources').firstChild.textContent =
-    settingsTranslate.photoSources[currentLang];
+    settingsLanguages.photoSources[currentLang];
 
   document.querySelector('.blocks').firstChild.textContent =
-    settingsTranslate.show[currentLang];
+    settingsLanguages.show[currentLang];
 
   let showItem = document.querySelectorAll('.show-item')
   showItem.forEach((item, i) => {
-    item.firstChild.textContent = settingsTranslate.blocks[i][currentLang];
+    item.firstChild.textContent = settingsLanguages.blocks[i][currentLang];
   });
 }
 
@@ -356,47 +318,21 @@ function changeLang() {
 function changeBlocksVisibility(name) {
   if (name === 'time') {
     document.querySelector('.time').classList.toggle('invisible');
-  } else if(name === 'date') {
+  } else if (name === 'date') {
     document.querySelector('.date').classList.toggle('invisible');
-  } else if(name === 'greeting') {
+  } else if (name === 'greeting') {
     document
       .querySelector('.greeting-container')
       .classList.toggle('invisible');
-  } else if(name === 'quote') {
+  } else if (name === 'quote') {
     document.querySelector('.quote').classList.toggle('invisible');
     document.querySelector('.author').classList.toggle('invisible');
     document.querySelector('.change-quote').classList.toggle('invisible');
-  } else if(name === 'weather') {
+  } else if (name === 'weather') {
     document.querySelector('.weather').classList.toggle('invisible');
-  } else if(name === 'audio') {
+  } else if (name === 'audio') {
     document.querySelector('.player').classList.toggle('invisible');
-  } else{
-      console.log(`You switched the language to ${state.language}.`);
-  }
-}
-
-function setElementVisibility(element, visible) {
-  visible
-    ? element.classList.remove('invisible')
-    : element.classList.add('invisible');
-}
-
-function setBlocksVisibility(name, visible) {
-  if (name === 'time') {
-    setElementVisibility(document.querySelector('.time'), visible);
-  } else if(name === 'date') {
-    setElementVisibility(document.querySelector('.date'), visible);
-  } else if(name === 'greeting') {
-    setElementVisibility(document.querySelector('.greeting-container'), visible);
-  } else if(name === 'quote') {
-    setElementVisibility(document.querySelector('.quote'), visible);
-    setElementVisibility(document.querySelector('.author'), visible);
-    setElementVisibility(document.querySelector('.change-quote'), visible);
-  } else if(name === 'weather') {
-    setElementVisibility(document.querySelector('.weather'), visible);
-  } else if(name === 'audio') {
-    setElementVisibility(document.querySelector('.player'), visible);
-  } else{
+  } else {
     console.log(`You switched the language to ${state.language}.`);
   }
 }
@@ -431,10 +367,10 @@ function changeImageSource() {
 
 langInputs.forEach((input) => input.addEventListener('change', changeLang));
 imageSourceInputs.forEach((input) =>
-    input.addEventListener('change', changeImageSource),
+  input.addEventListener('change', changeImageSource),
 );
 blockInputs.forEach((input) =>
-    input.addEventListener('change', changeBlocksVisibilityAndInitState),
+  input.addEventListener('change', changeBlocksVisibilityAndInitState),
 );
 unsplashInput.addEventListener('change', changeTag);
 flickrInput.addEventListener('change', changeTag);
@@ -443,9 +379,7 @@ flickrInput.addEventListener('change', changeTag);
 
 function setDataToLocalStorage() {
   localStorage.setItem('name', name.value);
-  const city = city.value ? city.value : defaultData.defaultCity[state.language];
-  localStorage.setItem('city', city.value);
-  localStorage.setItem('settings', JSON.stringify(state.language));
+  localStorage.setItem('city', city.value ? city.value : defaultData.defaultCity[state.language]);
 }
 
 function getDataFromLocalStorage() {
@@ -456,43 +390,6 @@ function getDataFromLocalStorage() {
   if (localStorage.getItem('city')) {
     city.value = localStorage.getItem('city');
     getWeather();
-  }
-  if (localStorage.getItem('settings')) {
-    state = JSON.parse(localStorage.getItem('settings'));
-
-    langInputs.forEach((input) => {
-      input.checked = false;
-      const value = input.value;
-      if (value === state.language) {
-        input.checked = true;
-        setLang();
-      }
-    });
-
-    imageSourceInputs.forEach((input) => {
-      input.checked = false;
-      const value = input.value;
-      const source = state.photoSource.source;
-      if (value === source) {
-        input.checked = 'checked';
-        const tagInput = document.querySelector(`.${source}`);
-        if (tagInput) {
-          tagInput.value = state.photoSource.tag;
-        }
-        setBg();
-      }
-    });
-
-    blockInputs.forEach((input) => {
-      input.checked = false;
-      const name = input.name;
-      if (state.blocks.includes(name)) {
-        input.checked = 'checked';
-        setBlocksVisibility(name, true);
-      } else {
-        setBlocksVisibility(name, false);
-      }
-    });
   }
 }
 
