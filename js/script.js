@@ -264,44 +264,35 @@ function openSettings() {
 buttonSettings.addEventListener('click', openSettings)
 
 
-export const langInputs = document.querySelectorAll('input[name="languages"]');
+const langInputs = document.querySelectorAll('input[name="languages"]');
 
-export const imageSourceInputs = document.querySelectorAll(
+const imageSourceInputs = document.querySelectorAll(
   'input[name="picture"]',
 );
 const unsplashInput = document.querySelector('.unsplash');
 const flickrInput = document.querySelector('.flickr');
 
-export const blockInputs = document.querySelectorAll('input[type="checkbox"]');
+const blockInputs = document.querySelectorAll('input[type="checkbox"]');
 
 /* ******************** */
 
-export function translateDefaultData() {
+function translateData() {
   let currentLang = state.language
-  document.querySelector('.name').placeholder = defaultData.namePlaceholder[currentLang];
-  document.querySelector('.city').placeholder = defaultData.cityPlaceholder[currentLang];
-  document.querySelectorAll('.image-src').forEach(
-    (input) => (input.placeholder = defaultData.tagPlaceholder[currentLang]),
-  );
-  document.querySelector('.language').firstChild.textContent =
-    settingsLanguages.language[currentLang];
-  document.querySelector('.photoSources').firstChild.textContent =
-    settingsLanguages.photoSources[currentLang];
-
-  document.querySelector('.blocks').firstChild.textContent =
-    settingsLanguages.show[currentLang];
-
+  name.placeholder = defaultData.namePlaceholder[currentLang];
+  city.placeholder = defaultData.cityPlaceholder[currentLang];
+  document.querySelectorAll('.image-src').forEach((input) => (input.placeholder = defaultData.tagPlaceholder[currentLang]));
+  document.querySelector('.language').firstChild.textContent = settingsLanguages.language[currentLang];
+  document.querySelector('.photoSources').firstChild.textContent = settingsLanguages.photoSources[currentLang];
+  document.querySelector('.blocks').firstChild.textContent = settingsLanguages.show[currentLang];
   let showItem = document.querySelectorAll('.show-item')
-  showItem.forEach((item, i) => {
-    item.firstChild.textContent = settingsLanguages.blocks[i][currentLang];
-  });
+  showItem.forEach((item, i) => { item.firstChild.textContent = settingsLanguages.blocks[i][currentLang]});
 }
 
-export function setLang() {
+export function setLanguages() {
   showDate();
   translateQuotes();
   translatePlayer();
-  translateDefaultData();
+  translateData();
   const value = city.value;
   if (value === 'Minsk' || value === 'Минск') {
     city.value = defaultData.defaultCity[state.language];
@@ -309,25 +300,23 @@ export function setLang() {
   getWeather();
 }
 
-function changeLang() {
+function changeLanguages() {
   state.language = this.value;
   console.log(state.language)
-  setLang();
+  setLanguages();
 }
 
-function changeBlocksVisibility(name) {
+function changeBlocksChecked(name) {
   if (name === 'time') {
-    document.querySelector('.time').classList.toggle('invisible');
+    time.classList.toggle('invisible');
   } else if (name === 'date') {
-    document.querySelector('.date').classList.toggle('invisible');
+    data.classList.toggle('invisible');
   } else if (name === 'greeting') {
-    document
-      .querySelector('.greeting-container')
-      .classList.toggle('invisible');
+    document.querySelector('.greeting-container').classList.toggle('invisible');
   } else if (name === 'quote') {
-    document.querySelector('.quote').classList.toggle('invisible');
-    document.querySelector('.author').classList.toggle('invisible');
-    document.querySelector('.change-quote').classList.toggle('invisible');
+    quote.classList.toggle('invisible');
+    author.classList.toggle('invisible');
+    changeQuote.classList.toggle('invisible');
   } else if (name === 'weather') {
     document.querySelector('.weather').classList.toggle('invisible');
   } else if (name === 'audio') {
@@ -337,8 +326,8 @@ function changeBlocksVisibility(name) {
   }
 }
 
-function changeBlocksVisibilityAndInitState() {
-  changeBlocksVisibility(this.name);
+function changeBlocksCheckedAndState() {
+  changeBlocksChecked(this.name);
   state.blocks = Array.from(blockInputs).reduce((array, input) => {
     if (input.checked) {
       array.push(input.name);
@@ -352,7 +341,7 @@ function changeTag() {
   setBg();
 }
 
-function changeImageSource() {
+function changeImagesSources() {
   const source = this.value;
   state.photoSource.source = source;
 
@@ -365,12 +354,12 @@ function changeImageSource() {
 
 /* ******************** */
 
-langInputs.forEach((input) => input.addEventListener('change', changeLang));
+langInputs.forEach((input) => input.addEventListener('change', changeLanguages));
 imageSourceInputs.forEach((input) =>
-  input.addEventListener('change', changeImageSource),
+  input.addEventListener('change', changeImagesSources),
 );
 blockInputs.forEach((input) =>
-  input.addEventListener('change', changeBlocksVisibilityAndInitState),
+  input.addEventListener('change', changeBlocksCheckedAndState),
 );
 unsplashInput.addEventListener('change', changeTag);
 flickrInput.addEventListener('change', changeTag);
