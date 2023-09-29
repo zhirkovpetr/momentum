@@ -264,7 +264,7 @@ function openSettings() {
 buttonSettings.addEventListener('click', openSettings)
 
 
-const langInputs = document.querySelectorAll('input[name="languages"]');
+const languageInput = document.querySelectorAll('input[name="languages"]');
 
 const imageSourceInputs = document.querySelectorAll(
   'input[name="picture"]',
@@ -285,7 +285,9 @@ function translateData() {
   document.querySelector('.photoSources').firstChild.textContent = settingsLanguages.photoSources[currentLang];
   document.querySelector('.blocks').firstChild.textContent = settingsLanguages.show[currentLang];
   let showItem = document.querySelectorAll('.show-item')
-  showItem.forEach((item, i) => { item.firstChild.textContent = settingsLanguages.blocks[i][currentLang]});
+  showItem.forEach((item, i) => {
+    item.firstChild.textContent = settingsLanguages.blocks[i][currentLang]
+  });
 }
 
 export function setLanguages() {
@@ -296,13 +298,14 @@ export function setLanguages() {
   const value = city.value;
   if (value === 'Minsk' || value === 'Минск') {
     city.value = defaultData.defaultCity[state.language];
+  } else {
+    city.value = this.value
   }
   getWeather();
 }
 
 function changeLanguages() {
   state.language = this.value;
-  console.log(state.language)
   setLanguages();
 }
 
@@ -354,7 +357,7 @@ function changeImagesSources() {
 
 /* ******************** */
 
-langInputs.forEach((input) => input.addEventListener('change', changeLanguages));
+languageInput.forEach((input) => input.addEventListener('change', changeLanguages));
 imageSourceInputs.forEach((input) =>
   input.addEventListener('change', changeImagesSources),
 );
@@ -369,6 +372,7 @@ flickrInput.addEventListener('change', changeTag);
 function setDataToLocalStorage() {
   localStorage.setItem('name', name.value);
   localStorage.setItem('city', city.value ? city.value : defaultData.defaultCity[state.language]);
+  localStorage.setItem('settings', JSON.stringify(state));
 }
 
 function getDataFromLocalStorage() {
@@ -379,6 +383,17 @@ function getDataFromLocalStorage() {
   if (localStorage.getItem('city')) {
     city.value = localStorage.getItem('city');
     getWeather();
+    if (localStorage.getItem('settings')) {
+      state = JSON.parse(localStorage.getItem('settings'));
+
+      languageInput.forEach((inputLang) => {
+        inputLang.checked = false;
+        if (inputLang.value === state.language) {
+          inputLang.checked = true;
+          setLanguages();
+        }
+      });
+    }
   }
 }
 
