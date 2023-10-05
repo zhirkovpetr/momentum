@@ -91,34 +91,43 @@ function getName() {
 
 /*-----------------------------Image----------------------------*/
 async function getLinkToImage(source, tag) {
-  if (source === "unsplash") {
-    const res = await fetch(`https://api.unsplash.com/photos/random?orientation=landscape&query=${tag}&client_id=1vT6OWQA7ERb719rz7EqvBfhkLYTsh6QzXO54nJQulg`);
-    const data = await res.json();
-    return data.urls.regular;
-  } else if (source === "flickr") {
-    const res = await fetch('https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=c2a7c5fc26b1cde466a73b794a5531ef&tags=nature&extras=url_h&format=json&nojsoncallback=1');
-    const data = await res.json();
-    return data.photos.photo[randomNum].url_h;
+  try{
+    if (source === "unsplash") {
+      const res = await fetch(`https://api.unsplash.com/photos/random?orientation=landscape&query=${tag}&client_id=1vT6OWQA7ERb719rz7EqvBfhkLYTsh6QzXO54nJQulg`);
+      const data = await res.json();
+      return data.urls.regular;
+    } else if (source === "flickr") {
+      const res = await fetch('https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=c2a7c5fc26b1cde466a73b794a5531ef&tags=nature&extras=url_h&format=json&nojsoncallback=1');
+      const data = await res.json();
+      return data.photos.photo[randomNum].url_h;
+    }
+  }
+  catch (e) {
+    console.log(e)
   }
 }
 
 async function setBg() {
-  const date = new Date();
-  let timeOfDay = getTimeOfDay(date);
-  getRandomNum()
-  let bgNum = String(randomNum).padStart(2, '0')
-  const img = new Image();
-  const photoSource = state.photoSource.source;
-  const userTag = state.photoSource.tag;
-  const tag = userTag ? userTag : timeOfDay;
-  if (photoSource === 'github') {
-    img.src = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${tag}/${bgNum}.jpg`;
-  } else {
-    img.src = await getLinkToImage(photoSource, tag);
+  try {
+    const date = new Date();
+    let timeOfDay = getTimeOfDay(date);
+    let bgNum = String(randomNum).padStart(2, '0')
+    const img = new Image();
+    const photoSource = state.photoSource.source;
+    const userTag = state.photoSource.tag;
+    const tag = userTag ? userTag : timeOfDay;
+    if (photoSource === 'github') {
+      img.src = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${tag}/${bgNum}.jpg`;
+    } else {
+      img.src = await getLinkToImage(photoSource, tag);
+    }
+    img.onload = () => {
+      body.style.backgroundImage = `url(${img.src})`;
+    };
   }
-  img.onload = () => {
-    body.style.backgroundImage = `url(${img.src})`;
-  };
+  catch (e) {
+    console.log(e)
+  }
 }
 
 /*Изображения можно перелистывать кликами по стрелкам, расположенным по бокам экрана*/
@@ -137,18 +146,24 @@ const value = city.value;
 city.value = value ? value : defaultData.defaultCity[state.language];
 
 async function getWeather() {
-  const value = city.value;
-  city.value = value ? value : defaultData.defaultCity[state.language];
-  const currentLang = state.language;
-  const currentCity = city.value ? city.value : defaultData.defaultCity[currentLang];
-  const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${currentCity}&lang=${currentLang}&appid=e612e6250fdb37b14c30611dad255a26&units=metric`);
-  const data = await res.json();
-  weatherIcon.className = 'weather-icon owf';
-  weatherIcon.classList.add(`owf-${data.weather[0].id}`);
-  temperature.textContent = `${data.main.temp.toFixed(0)}°C`;
-  weatherDescription.textContent = data.weather[0].description;
-  weatherWindSpeed.textContent = `${defaultData.windSpeed[currentLang]}: ${data.wind.speed} ${defaultData.windSpeedUnits[currentLang]}`;
-  weatherHumidity.textContent = `${defaultData.humidity[currentLang]}: ${data.main.humidity}%`;
+  try {
+    const value = city.value;
+    city.value = value ? value : defaultData.defaultCity[state.language];
+    const currentLang = state.language;
+    const currentCity = city.value ? city.value : defaultData.defaultCity[currentLang];
+
+    const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${currentCity}&lang=${currentLang}&appid=e612e6250fdb37b14c30611dad255a26&units=metric`);
+    const data = await res.json();
+    weatherIcon.className = 'weather-icon owf';
+    weatherIcon.classList.add(`owf-${data.weather[0].id}`);
+    temperature.textContent = `${data.main.temp.toFixed(0)}°C`;
+    weatherDescription.textContent = data.weather[0].description;
+    weatherWindSpeed.textContent = `${defaultData.windSpeed[currentLang]}: ${data.wind.speed} ${defaultData.windSpeedUnits[currentLang]}`;
+    weatherHumidity.textContent = `${defaultData.humidity[currentLang]}: ${data.main.humidity}%`;
+  }
+  catch (e) {
+    console.log(e)
+  }
 }
 
 function changeCityHandler() {
@@ -159,11 +174,16 @@ function changeCityHandler() {
 
 /*-----------------------------Quotes----------------------------*/
 async function getQuotes() {
-  const res = await fetch('assets/data.json');
-  const data = await res.json();
-  quote.textContent = data[i].text[state.language]
-  author.textContent = data[i].author[state.language]
-  return data
+  try{
+    const res = await fetch('assets/data.json');
+    const data = await res.json();
+    quote.textContent = data[i].text[state.language]
+    author.textContent = data[i].author[state.language]
+    return data
+  }
+  catch (e) {
+    console.log(e)
+  }
 }
 
 
@@ -175,15 +195,19 @@ function getQuotesnext() {
 /*translate quotes*/
 
 export async function translateQuotes() {
-  const data = await getQuotes();
-
-  const quotes = quote.textContent;
-  const currentLang = state.language;
-  const changeLang = currentLang === "en" ? "ru" : "en";
-  const index = data.findIndex((item) => item.text[changeLang] === quotes);
-  if (index !== -1) {
-    quote.textContent = data[index].text[currentLang];
-    author.textContent = data[index].author[currentLang];
+  try{
+    const data = await getQuotes();
+    const quotes = quote.textContent;
+    const currentLang = state.language;
+    const changeLang = currentLang === "en" ? "ru" : "en";
+    const index = data.findIndex((item) => item.text[changeLang] === quotes);
+    if (index !== -1) {
+      quote.textContent = data[index].text[currentLang];
+      author.textContent = data[index].author[currentLang];
+    }
+  }
+  catch (e) {
+    console.log(e)
   }
 }
 
@@ -393,6 +417,8 @@ flickrInput.addEventListener('change', changeTag);
 function setDataToLocalStorage() {
   localStorage.setItem('name', name.value);
   localStorage.setItem('image', body.style.backgroundImage);
+  localStorage.setItem('quote', quote.value);
+  localStorage.setItem('author', author.value);
   localStorage.setItem('city', city.value ? city.value : defaultData.defaultCity[state.language]);
   localStorage.setItem('settings', JSON.stringify(state));
 }
@@ -407,6 +433,13 @@ function getDataFromLocalStorage() {
   if (localStorage.getItem('city')) {
     city.value = localStorage.getItem('city');
     getWeather();
+    if (localStorage.getItem('quote')) {
+      quote.value = localStorage.getItem('quote');
+    }
+
+    if (localStorage.getItem('author')) {
+      author.value = localStorage.getItem('author');
+    }
     if (localStorage.getItem('settings')) {
       state = JSON.parse(localStorage.getItem('settings'));
 
@@ -443,9 +476,3 @@ function getDataFromLocalStorage() {
 
 window.addEventListener('beforeunload', setDataToLocalStorage);
 window.addEventListener('load', getDataFromLocalStorage);
-
-function getRandomNum(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
