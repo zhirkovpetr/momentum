@@ -272,7 +272,7 @@ const photoSource = document.querySelectorAll(
 const unsplashInput = document.querySelector('.unsplash');
 const flickrInput = document.querySelector('.flickr');
 
-const blockInputs = document.querySelectorAll('input[type="checkbox"]');
+const blocks = document.querySelectorAll('input[type="checkbox"]');
 
 /* ******************** */
 
@@ -329,9 +329,31 @@ function changeBlocksChecked(name) {
   }
 }
 
+function setBlocksChecked(name, visible) {
+  if (name === "time") {
+    visible ? time.classList.remove('invisible') : time.classList.add('invisible');
+  } else if (name === "date") {
+    visible ? data.classList.remove('invisible') : data.classList.add('invisible');
+  } else if (name === "greeting") {
+    visible ? greeting.classList.remove('invisible') : greeting.classList.add('invisible');
+  } else if (name === "quote") {
+    visible ? quote.classList.remove('invisible') : quote.classList.add('invisible');
+    visible ? author.classList.remove('invisible') : author.classList.add('invisible');
+    visible ? changeQuote.classList.remove('invisible') : changeQuote.classList.add('invisible');
+  } else if (name === "weather") {
+    let weather = document.querySelector('.weather');
+    visible ? weather.classList.remove('invisible') : weather.classList.add('invisible');
+  } else if (name === "audio") {
+    let player = document.querySelector('.player');
+    visible ? player.classList.remove('invisible') : player.classList.add('invisible');
+  } else {
+    console.log(`sorry, there is no input ${name}.`);
+  }
+}
+
 function changeBlocksCheckedAndState() {
   changeBlocksChecked(this.name);
-  state.blocks = Array.from(blockInputs).reduce((array, input) => {
+  state.blocks = Array.from(blocks).reduce((array, input) => {
     if (input.checked) {
       array.push(input.name);
     }
@@ -361,7 +383,7 @@ languageInput.forEach((input) => input.addEventListener('change', changeLanguage
 photoSource.forEach((input) =>
   input.addEventListener('change', changeImagesSources),
 );
-blockInputs.forEach((input) =>
+blocks.forEach((input) =>
   input.addEventListener('change', changeBlocksCheckedAndState),
 );
 unsplashInput.addEventListener('change', changeTag);
@@ -404,6 +426,15 @@ function getDataFromLocalStorage() {
         tagInput.value = state.photoSource.tag;
       }
       setBg();
+    }
+  });
+  blocks.forEach((inputBlock) => {
+    inputBlock.checked = false;
+    if (state.blocks.includes(inputBlock.name)) {
+      inputBlock.checked = 'checked';
+      setBlocksChecked(inputBlock.name, true);
+    } else {
+      setBlocksChecked(inputBlock.name, false);
     }
   });
 }
