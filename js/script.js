@@ -25,7 +25,6 @@ const table = document.querySelector('.table');
 const audio = new Audio();
 let randomNum = 1;
 let isPlay = false;
-let i = 0;
 let playNum = 0;
 let state = {
   language: "en",
@@ -41,12 +40,12 @@ window.addEventListener("DOMContentLoaded", setBg)
 slideNext.addEventListener('click', getSlideNext)
 slidePrev.addEventListener('click', getSlidePrev)
 city.addEventListener('change', changeCityHandler);
-changeQuote.addEventListener('click', getQuotesnext);
+changeQuote.addEventListener('click', getQuotes);
 
 /*-----------------------------Time----------------------------*/
 function showTime() {
   const date = new Date();
-  time.textContent = date.toLocaleTimeString(state.language === "en" ? 'en-US' : 'ru-Ru');
+  time.textContent = date.toLocaleTimeString( 'ru-Ru');
   showDate()
   showGreeting(state.language)
   setTimeout(showTime, 1000);
@@ -91,7 +90,7 @@ function getName() {
 
 /*-----------------------------Image----------------------------*/
 async function getLinkToImage(source, tag) {
-  try{
+  try {
     if (source === "unsplash") {
       const res = await fetch(`https://api.unsplash.com/photos/random?orientation=landscape&query=${tag}&client_id=1vT6OWQA7ERb719rz7EqvBfhkLYTsh6QzXO54nJQulg`);
       const data = await res.json();
@@ -101,8 +100,7 @@ async function getLinkToImage(source, tag) {
       const data = await res.json();
       return data.photos.photo[randomNum].url_h;
     }
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e)
   }
 }
@@ -124,20 +122,19 @@ async function setBg() {
     img.onload = () => {
       body.style.backgroundImage = `url(${img.src})`;
     };
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e)
   }
 }
 
 /*Изображения можно перелистывать кликами по стрелкам, расположенным по бокам экрана*/
 function getSlideNext() {
-  randomNum = randomNum === 20 ? randomNum= 1 : randomNum= randomNum + 1
+  randomNum = randomNum === 20 ? randomNum = 1 : randomNum = randomNum + 1
   setBg()
 }
 
 function getSlidePrev() {
-  randomNum = randomNum === 1 ? randomNum= 20 : randomNum= randomNum - 1
+  randomNum = randomNum === 1 ? randomNum = 20 : randomNum = randomNum - 1
   setBg()
 }
 
@@ -160,9 +157,9 @@ async function getWeather() {
     weatherDescription.textContent = data.weather[0].description;
     weatherWindSpeed.textContent = `${defaultData.windSpeed[currentLang]}: ${data.wind.speed} ${defaultData.windSpeedUnits[currentLang]}`;
     weatherHumidity.textContent = `${defaultData.humidity[currentLang]}: ${data.main.humidity}%`;
-  }
-  catch (e) {
-    console.log(e)
+    document.getElementById("weather-error").textContent= ""
+  } catch (error) {
+    document.getElementById("weather-error").textContent = `${state.language === "en" ? "Please, enter correct city" : "Пожалуйста, введите корректный город"}`
   }
 }
 
@@ -174,28 +171,19 @@ function changeCityHandler() {
 
 /*-----------------------------Quotes----------------------------*/
 async function getQuotes() {
-  try{
-    const res = await fetch('assets/data.json');
-    const data = await res.json();
-    quote.textContent = data[i].text[state.language]
-    author.textContent = data[i].author[state.language]
-    return data
-  }
-  catch (e) {
-    console.log(e)
-  }
+  const res = await fetch('assets/data.json');
+  const data = await res.json();
+  let numberOfQuote = Math.floor(Math.random() * data.length);
+  author.textContent = data[numberOfQuote].author[state.language];
+  quote.textContent = data[numberOfQuote].text[state.language]
 }
 
-
-function getQuotesnext() {
-  i = i < 2 ? i + 1 : 0
-  getQuotes()
-}
+getQuotes()
 
 /*translate quotes*/
 
 export async function translateQuotes() {
-  try{
+  try {
     const data = await getQuotes();
     const quotes = quote.textContent;
     const currentLang = state.language;
@@ -205,8 +193,7 @@ export async function translateQuotes() {
       quote.textContent = data[index].text[currentLang];
       author.textContent = data[index].author[currentLang];
     }
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e)
   }
 }
@@ -417,8 +404,6 @@ flickrInput.addEventListener('change', changeTag);
 function setDataToLocalStorage() {
   localStorage.setItem('name', name.value);
   localStorage.setItem('image', body.style.backgroundImage);
-  localStorage.setItem('quote', quote.value);
-  localStorage.setItem('author', author.value);
   localStorage.setItem('city', city.value ? city.value : defaultData.defaultCity[state.language]);
   localStorage.setItem('settings', JSON.stringify(state));
 }
@@ -428,18 +413,11 @@ function getDataFromLocalStorage() {
     name.value = localStorage.getItem('name');
   }
   if (localStorage.getItem('image')) {
-    body.style.backgroundImage= localStorage.getItem('image');
+    body.style.backgroundImage = localStorage.getItem('image');
   }
   if (localStorage.getItem('city')) {
     city.value = localStorage.getItem('city');
     getWeather();
-    if (localStorage.getItem('quote')) {
-      quote.value = localStorage.getItem('quote');
-    }
-
-    if (localStorage.getItem('author')) {
-      author.value = localStorage.getItem('author');
-    }
     if (localStorage.getItem('settings')) {
       state = JSON.parse(localStorage.getItem('settings'));
 

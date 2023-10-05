@@ -19,5 +19,29 @@
       "en": "Walking on water and developing programs following the TOR is very easy ... if they are frozen"
     },
     "author": { "ru": "И. Берард", "en": "I. Berard"}
+  },
+  {
+    "text": {
+      "ru": "Если у тебя получилось обмануть человека, это не значит, что он дурак, это значит, что тебе доверяли больше, чем ты этого заслуживаешь.",
+      "en": "If you managed to deceive a person, it does not mean that he is a fool, it means that you were trusted more than you deserve it."
+    },
+    "author": { "ru": "Чарльз Буковски", "en": "Charles Bukowski"}
+  },
+  {
+    "text": {
+      "ru": "Настоящий друг — это человек, который выскажет тебе в глаза все, что о тебе думает, а всем скажет, что ты — замечательный человек.",
+      "en": "A true friend is a person who will express to your eyes everything that he thinks about you, and will tell everyone that you are a wonderful person."
+    },
+    "author": { "ru": "Омар Хайям", "en": "Omar Khayyam"}
+  },
+  {
+    "text": {
+      "ru": "Мы в жизни любим только раз, а после ищем лишь похожих.",
+      "en": "We love only once in life, and after that we are looking for only similar ones."
+    },
+    "author": {
+      "ru": " Сергей Есенин",
+      "en": "Sergey Yesenin"
+    }
   }
 ]

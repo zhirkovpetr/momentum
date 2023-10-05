@@ -116,6 +116,7 @@ body {
 }
 .weather-error {
     margin-top: -10px;
+    color: red;
 }
 .description-container {
     display: flex;
