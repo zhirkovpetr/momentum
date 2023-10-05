@@ -266,7 +266,7 @@ buttonSettings.addEventListener('click', openSettings)
 
 const languageInput = document.querySelectorAll('input[name="languages"]');
 
-const imageSourceInputs = document.querySelectorAll(
+const photoSource = document.querySelectorAll(
   'input[name="picture"]',
 );
 const unsplashInput = document.querySelector('.unsplash');
@@ -358,7 +358,7 @@ function changeImagesSources() {
 /* ******************** */
 
 languageInput.forEach((input) => input.addEventListener('change', changeLanguages));
-imageSourceInputs.forEach((input) =>
+photoSource.forEach((input) =>
   input.addEventListener('change', changeImagesSources),
 );
 blockInputs.forEach((input) =>
@@ -395,6 +395,17 @@ function getDataFromLocalStorage() {
       });
     }
   }
+  photoSource.forEach((inputPhotoSource) => {
+    inputPhotoSource.checked = false;
+    if (inputPhotoSource.value === state.photoSource.source) {
+      inputPhotoSource.checked = true;
+      const tagInput = document.querySelector(`.${state.photoSource.source}`);
+      if (tagInput) {
+        tagInput.value = state.photoSource.tag;
+      }
+      setBg();
+    }
+  });
 }
 
 window.addEventListener('beforeunload', setDataToLocalStorage);
