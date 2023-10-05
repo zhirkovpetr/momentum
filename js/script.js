@@ -23,7 +23,7 @@ const playListContainer = document.querySelector('.play-list');
 const buttonSettings = document.querySelector('.button-settings');
 const table = document.querySelector('.table');
 const audio = new Audio();
-let randomNum = getRandomNum();
+let randomNum = 1;
 let isPlay = false;
 let i = 0;
 let playNum = 0;
@@ -98,8 +98,7 @@ async function getLinkToImage(source, tag) {
   } else if (source === "flickr") {
     const res = await fetch('https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=c2a7c5fc26b1cde466a73b794a5531ef&tags=nature&extras=url_h&format=json&nojsoncallback=1');
     const data = await res.json();
-    let bgNum = getRandomNum(0, data.photos.photo.length)
-    return data.photos.photo[bgNum].url_h;
+    return data.photos.photo[randomNum].url_h;
   }
 }
 
@@ -107,7 +106,7 @@ async function setBg() {
   const date = new Date();
   let timeOfDay = getTimeOfDay(date);
   getRandomNum()
-  let bgNum = String(getRandomNum(1, 20)).padStart(2, '0')
+  let bgNum = String(randomNum).padStart(2, '0')
   const img = new Image();
   const photoSource = state.photoSource.source;
   const userTag = state.photoSource.tag;
@@ -124,12 +123,12 @@ async function setBg() {
 
 /*Изображения можно перелистывать кликами по стрелкам, расположенным по бокам экрана*/
 function getSlideNext() {
-  randomNum = randomNum > 20 ? 1 : randomNum + 1
+  randomNum = randomNum === 20 ? randomNum= 1 : randomNum= randomNum + 1
   setBg()
 }
 
 function getSlidePrev() {
-  randomNum = randomNum > -1 ? 20 : randomNum - 1
+  randomNum = randomNum === 1 ? randomNum= 20 : randomNum= randomNum - 1
   setBg()
 }
 
@@ -393,6 +392,7 @@ flickrInput.addEventListener('change', changeTag);
 
 function setDataToLocalStorage() {
   localStorage.setItem('name', name.value);
+  localStorage.setItem('image', body.style.backgroundImage);
   localStorage.setItem('city', city.value ? city.value : defaultData.defaultCity[state.language]);
   localStorage.setItem('settings', JSON.stringify(state));
 }
@@ -401,7 +401,9 @@ function getDataFromLocalStorage() {
   if (localStorage.getItem('name')) {
     name.value = localStorage.getItem('name');
   }
-
+  if (localStorage.getItem('image')) {
+    body.style.backgroundImage= localStorage.getItem('image');
+  }
   if (localStorage.getItem('city')) {
     city.value = localStorage.getItem('city');
     getWeather();
